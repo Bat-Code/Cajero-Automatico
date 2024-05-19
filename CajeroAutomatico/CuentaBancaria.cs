@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices.JavaScript;
-
+using System.Text; // Lo necesito para usar StringBuilder
 namespace CajeroAutomatico;
 
 public class CuentaBancaria
@@ -42,5 +42,26 @@ public class CuentaBancaria
     public String getNombreTitular()
     {
         return this.nombreTitular;
+    }
+
+    public String getSaldo()
+    {
+        string saldoStr = this.Saldo.ToString();
+        int len = saldoStr.Length;
+        int counter = 0;
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = len - 1; i >= 0; i--)
+        {
+            counter++;
+            sb.Insert(0, saldoStr[i]);
+
+            if (counter % 3 == 0 && i != 0)
+            {
+                sb.Insert(0, '.');
+            }
+        }
+
+        return sb.ToString();
     }
 }

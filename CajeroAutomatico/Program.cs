@@ -14,6 +14,10 @@ class Program
         List<CuentaBancaria> cuentas = new Datos().crearCuentasBancarias();
         Cajero funcionesCajero = new Cajero();
 
-        funcionesCajero.autenticacionInformacion(cuentas);
+        int indexDeCuenta = funcionesCajero.autenticacionInformacion(cuentas);
+        
+        funcionesCajero.menuCajero(cuentas[indexDeCuenta]);
+        
+        
     }
 }
