@@ -13,11 +13,52 @@ class Program
         // Cargamos la Informacion de los usuarios
         List<CuentaBancaria> cuentas = new Datos().crearCuentasBancarias();
         Cajero funcionesCajero = new Cajero();
+        while (true)
+        {
+            Console.Clear();
+            int indexDeCuenta = funcionesCajero.autenticacionInformacion(cuentas);
 
-        int indexDeCuenta = funcionesCajero.autenticacionInformacion(cuentas);
-        
-        funcionesCajero.menuCajero(cuentas[indexDeCuenta]);
-        
-        
+            Boolean cicloMenu = true;
+            while (cicloMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("Bienvenido " + cuentas[indexDeCuenta].getNombreTitular());
+                Console.WriteLine("Por favor elija una de las siguiente opciones:");
+                Console.WriteLine("1. Consultar Saldo");
+                Console.WriteLine("2. Retirar Dinero");
+                Console.WriteLine("3. Consultar Puntos Colombia");
+                Console.WriteLine("4. Enviar Dinero a otra cuenta");
+                Console.WriteLine("5. Cerrar Sesion");
+                Console.WriteLine("\nDigite su opcion:");
+                int opcion = int.Parse(Console.ReadLine());
+
+                switch (opcion)
+                {
+                    case 1: // Solicitu de saldo
+                        Console.WriteLine("\nSu saldo es de: " + cuentas[indexDeCuenta].getSaldoText());
+                        Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        funcionesCajero.cantidadRetiro(cuentas[indexDeCuenta]);
+                        Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
+                        Console.ReadKey();
+                        break;
+                    case 3: // Soliciutd de puntos Colombia
+                        Console.WriteLine("\n Actualmente usted posee " + cuentas[indexDeCuenta].getPuntosColombia() +
+                                          " Puntos Colombia");
+                        Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
+                        Console.ReadKey();
+                        break;
+                    case 4:
+                        break;
+                    case 5: // Cerrar Sesion
+                        cicloMenu = false;
+                        break;
+                }
+            }
+        }
+
+
     }
 }

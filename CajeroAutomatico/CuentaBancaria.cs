@@ -11,6 +11,7 @@ public class CuentaBancaria
     private int puntosColombia;
     private Boolean limite = true;
     private String password;
+    public int cantidadRetirada { get; set; } = 0;
     
     private int calculoPuntosColombia()
     {
@@ -43,8 +44,12 @@ public class CuentaBancaria
     {
         return this.nombreTitular;
     }
-
-    public String getSaldo()
+    
+    public float getSaldo()
+    {
+        return this.Saldo;
+    }
+    public String getSaldoText()
     {
         string saldoStr = this.Saldo.ToString();
         int len = saldoStr.Length;
@@ -63,5 +68,15 @@ public class CuentaBancaria
         }
 
         return sb.ToString();
+    }
+    
+    public int getPuntosColombia()
+    {
+        return this.puntosColombia;
+    }
+
+    public void setSaldo(float cantidad)
+    {
+        this.Saldo = cantidad;
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace CajeroAutomatico;
+﻿using System.Security;
+
+namespace CajeroAutomatico;
 
 public class Cajero
 {
@@ -51,40 +53,55 @@ public class Cajero
         return cuentaIndex;
     }
 
-    public void menuCajero(CuentaBancaria cuenta)
+    public void cantidadRetiro(CuentaBancaria cuenta)
     {
-        Boolean cicloMenu = true;
-        while (cicloMenu)
-        {
-            Console.Clear();
-            Console.WriteLine("Bienvenido " + cuenta.getNombreTitular());
-            Console.WriteLine("Por favor elija una de las siguiente opciones:");
-            Console.WriteLine("1. Consultar Saldo");
-            Console.WriteLine("2. Retirar Dinero");
-            Console.WriteLine("3. Consultar Puntos Colombia");
-            Console.WriteLine("4. Enviar Dinero a otra cuenta");
-            Console.WriteLine("5. Salir");
-            Console.WriteLine("\nDigite su opcion:");
-            int opcion = int.Parse(Console.ReadLine());
+        Boolean cicloCantidad = true;
 
-            switch (opcion)
+        try
+        {
+            if (cuenta.cantidadRetirada >= 2000000)
             {
-                case 1:
-                    Console.WriteLine("\nSu saldo es de: " + cuenta.getSaldo());
-                    Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
-                    Console.ReadKey();
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    cicloMenu = false;
-                    break;
+                throw new Exception("Ha superado el limite de retiro diario de 2.000.000. Por favor intente mañana.");
+            }
+
+            while (cicloCantidad)
+            {
+                try
+                {
+                    Console.WriteLine("Por favor ingrese la cantidad a retirar:");
+                    int cantidad = int.Parse(Console.ReadLine());
+                    // verificar si la cantidad es mayor al saldo
+
+                    if (cuenta.cantidadRetirada + cantidad > 2000000)
+                    {
+                        cicloCantidad = false;
+                        throw new Exception(
+                            "El retiro solicitado sobrepasa el limite diario de 2.000.000. Por favor intente con una cantidad menor.");
+                    }
+
+                    if (cantidad <= cuenta.getSaldo() && cantidad <= 2000000)
+                    {
+                        Console.WriteLine("\nQuerido usauario, su retiro ha sido exitoso.");
+                        Console.WriteLine("Cantidad retirada es de: " + cantidad);
+                        Console.WriteLine("Fecha y hora del retiro: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"));
+                        cuenta.cantidadRetirada += cantidad;
+                        cuenta.setSaldo(cuenta.getSaldo() - cantidad);
+                        cicloCantidad = false;
+                        break;
+                    }
+
+                    throw new Exception("No tiene suficiente saldo para realizar esta transaccion.");
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
-        
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 }
