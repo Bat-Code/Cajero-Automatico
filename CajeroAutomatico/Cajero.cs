@@ -17,20 +17,22 @@ public class Cajero
             {
                 Console.WriteLine("Por favor ingrese su numero de cuenta:");
                 String numeroCuenta = Console.ReadLine();
-                
+
                 //Validamos que el numero de cuenta sea de 8 digitos y sea un numero
                 if (numeroCuenta.Length != 8 || !long.TryParse(numeroCuenta, out _))
                 {
                     throw new InvalidLengthNumberException();
                 }
+
                 // Solicitud de contraseña
                 Console.WriteLine("Por favor ingrese su contraseña:");
                 String password = Console.ReadLine();
-                
+
                 // Validacion de datos y certificacion del index
                 for (int i = 0; i < cuentaBancarias.Count; i++)
                 {
-                    if (cuentaBancarias[i].getNumeroCuenta().Equals(numeroCuenta) && cuentaBancarias[i].getPassword().Equals(password))
+                    if (cuentaBancarias[i].getNumeroCuenta().Equals(numeroCuenta) &&
+                        cuentaBancarias[i].getPassword().Equals(password))
                     {
                         Console.WriteLine("Funciono");
                         cicloAutenticacion = false;
@@ -38,18 +40,19 @@ public class Cajero
                         break;
                     }
                 }
+
                 // Se utiliza el if para que en el caso que la cuenta y contraseña sean incorrecta vote un error.
                 if (cicloAutenticacion)
                 {
                     throw new InvalidLengthNumberException("El numero de cuenta o contraseña son incorrectos.");
                 }
-                
-            } catch (InvalidLengthNumberException e)
+            }
+            catch (InvalidLengthNumberException e)
             {
                 Console.WriteLine(e.Message);
             }
         }
-        
+
         return cuentaIndex;
     }
 
@@ -91,7 +94,6 @@ public class Cajero
                     }
 
                     throw new Exception("No tiene suficiente saldo para realizar esta transaccion.");
-
                 }
                 catch (Exception e)
                 {
@@ -102,6 +104,58 @@ public class Cajero
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+        }
+    }
+
+    public void trasferirDinero(List<CuentaBancaria> cuentaBancarias, CuentaBancaria cuentaOrigen)
+    {
+        Boolean bucleTrasferencia = true;
+        while (bucleTrasferencia)
+        {
+            try
+            {
+                Console.WriteLine("\nBienvenido, por favor ingrese el numero de cuenta a la que desea transferir:");
+                String numeroCuenta = Console.ReadLine();
+
+                //Validamos que el numero de cuenta sea de 8 digitos y sea un numero valido
+                if (numeroCuenta.Length != 8 || !long.TryParse(numeroCuenta, out _))
+                {
+                    throw new InvalidLengthNumberException();
+                }
+
+                //Validamos que la cuenta a la que se va a transferir exista
+                int i;
+                for (i = 0; i < cuentaBancarias.Count; i++)
+                {
+                    if (cuentaBancarias[i].getNumeroCuenta().Equals(numeroCuenta))
+                    {
+                        Console.WriteLine("Por favor ingrese la cantidad a transferir:");
+                        int cantidad = int.Parse(Console.ReadLine());
+                        if (cantidad <= cuentaOrigen.getSaldo())
+                        {
+                            cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - cantidad);
+                            cuentaBancarias[i].setSaldo(cuentaBancarias[i].getSaldo() + cantidad);
+                            Console.WriteLine("Transferencia exitosa.");
+                            bucleTrasferencia = false;
+                            break;
+                        }
+
+                        throw new InvalidLengthNumberException(
+                            "No tiene suficiente saldo para realizar esta transaccion.");
+                    }
+
+                    if (i == cuentaBancarias.Count)
+                    {
+                        
+                        throw new InvalidLengthNumberException("La cuenta a la que desea transferir no existe.");
+                    }
+                }
+
+            }
+            catch (InvalidLengthNumberException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

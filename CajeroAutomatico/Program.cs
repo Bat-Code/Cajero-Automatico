@@ -5,7 +5,6 @@
  * Estudiante de Ingenieria de Sistemas
  * Universidad Nacional Abierta y a Distancia
  */
-
 class Program
 {
     static void Main(String[] args)
@@ -50,15 +49,16 @@ class Program
                         Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
                         Console.ReadKey();
                         break;
-                    case 4:
+                    case 4: // Traspaso de dinero a otra cuenta
+                        funcionesCajero.trasferirDinero(cuentas, cuentas[indexDeCuenta]);
+                        Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
+                        Console.ReadKey();
                         break;
-                    case 5: // Cerrar Sesion
+                    case 5: // Cerrar Sesio
                         cicloMenu = false;
                         break;
                 }
             }
         }
-
-
     }
 }
