@@ -120,6 +120,7 @@ public class Cajero
                 //Validamos que el numero de cuenta sea de 8 digitos y sea un numero valido
                 if (numeroCuenta.Length != 8 || !long.TryParse(numeroCuenta, out _))
                 {
+                    bucleTrasferencia = false;
                     throw new InvalidLengthNumberException();
                 }
 
@@ -131,6 +132,23 @@ public class Cajero
                     {
                         Console.WriteLine("Por favor ingrese la cantidad a transferir:");
                         int cantidad = int.Parse(Console.ReadLine());
+                        
+                        Console.Clear();
+                        
+                        Console.WriteLine("\nLa cuenta a la que va a transferir es: " + cuentaBancarias[i].getNombreTitular());
+                        Console.WriteLine("La cantidad a transferir es de: " + cantidad);
+                        Console.WriteLine("¿Desea continuar con la transferencia?");
+                        Console.WriteLine("1. Si");
+                        Console.WriteLine("2. No");
+                        String respuesta = Console.ReadLine();
+                        
+                        if (respuesta.Equals("2"))
+                        {
+                            Console.WriteLine("Transferencia cancelada.");
+                            bucleTrasferencia = false;
+                            break;
+                        }
+                        
                         if (cantidad <= cuentaOrigen.getSaldo())
                         {
                             cuentaOrigen.setSaldo(cuentaOrigen.getSaldo() - cantidad);
@@ -140,6 +158,7 @@ public class Cajero
                             break;
                         }
 
+                        bucleTrasferencia = false; 
                         throw new InvalidLengthNumberException(
                             "No tiene suficiente saldo para realizar esta transaccion.");
                     }

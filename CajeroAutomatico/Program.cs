@@ -39,6 +39,7 @@ class Program
                         Console.ReadKey();
                         break;
                     case 2:
+                        Console.Clear();
                         funcionesCajero.cantidadRetiro(cuentas[indexDeCuenta]);
                         Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
                         Console.ReadKey();
@@ -50,6 +51,7 @@ class Program
                         Console.ReadKey();
                         break;
                     case 4: // Traspaso de dinero a otra cuenta
+                        Console.Clear();
                         funcionesCajero.trasferirDinero(cuentas, cuentas[indexDeCuenta]);
                         Console.WriteLine("Presione cualquier tecla para escoger otra opcion.");
                         Console.ReadKey();
